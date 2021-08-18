@@ -38,16 +38,6 @@ __attribute__ ((naked)) void SwitchContext(void){
   
   RESTORE_SP();
   RESTORE_CONTEXT();
-
-    /*// Entrada de interrupção
-    OS_SAVE_ISR();
-
-    // Manipulação de interrupções
-    Clear_PendSV();
-
-    // Saída de interrupções
-    OS_EXIT_INT();
-    OS_RESTORE_ISR();*/
 }
 
 void init_os_timer(void){
@@ -58,37 +48,23 @@ void init_os_timer(void){
     *(NVIC_SYSTICK_CTRL) = NVIC_SYSTICK_CLK | NVIC_SYSTICK_INT | NVIC_SYSTICK_ENABLE;
 }
 
-/*__attribute__ ((naked)) */void TickTimer(void){
+void TickTimer(void){
   if(os_inc_and_compare()){
-    SAVE_CONTEXT();
+    /*SAVE_CONTEXT();
     SAVE_SP();
     
     current_task->stk=stk_tmp;
     stk_tmp = scheduler();
   
     RESTORE_SP();  
-    RESTORE_CONTEXT();
+    RESTORE_CONTEXT();*/
+      yield();
   }
 }
 
-/*__attribute__ ((naked))*/ void SVCHandler(void){
+__attribute__ ((naked)) void SVCHandler(void){
     *(NVIC_SYSPRI3) |= NVIC_PENDSV_PRI;
     *(NVIC_SYSPRI3) |= NVIC_SYSTICK_PRI;
     RESTORE_SP();
     RESTORE_CONTEXT();
-}/**/
-
-/*uint32_t OS_CPU_SR_Save(void){
-    uint32_t priority;
-    __asm(                            \
-            "MRS %0, PRIMASK      \n" \
-            "CPSID I              \n" \
-            : "=r" (priority)         \
-              );
-    return priority;
 }
-
-void OS_CPU_SR_Restore(uint32_t SR){
-    __asm volatile("MSR PRIMASK, %0\n\t" :: "r" (SR));
-}
-*/

@@ -14,8 +14,10 @@ void task1(void) {
 
 void task2(void) {
   int i = 0;
+  volatile float a = 0.01;
   for(;;){
     i++;
+    a = a + 0.05;
     //#if with_scheduler == 1
     delay(20);
     /*#else
@@ -27,9 +29,11 @@ void task2(void) {
 //sem_t semaf;
 void task3(void) {
   int i = 0;
+  volatile float a = 0.01;
   //(void)sem_init(&semaf);
   for(;;){
     i++;
+    a += 0.01;
     //#if with_scheduler == 1
     delay(30);
     //(void)sem_post(&semaf);
@@ -44,7 +48,7 @@ void task4(void) {
   int i = 0;
   for(;;){
     i++;
-    //delay(5);
+    delay(5);
       //(void)sem_pend(&semaf, 300);
   }
 }

@@ -33,37 +33,7 @@ extern cpu_t *stk_tmp;
 void init_os_timer(void);
 cpu_t *PrepareStack(void *task, cpu_t *stk, int stk_size);
 //////////////////////////////////////////////////
-/*#define ChangeContext()     *(NVIC_INT_CTRL) = NVIC_PENDSVSET;\
-                            UserExitCritical()*/
 #define CLEAR_PENDSV(void)  *(NVIC_INT_CTRL) = NVIC_PENDSVCLR
-//#define OS_INT_EXIT_EXT()   *(NVIC_INT_CTRL) = NVIC_PENDSVSET
-
-/*//Bloqueio de interrupções
-uint32_t OS_CPU_SR_Save(void);
-#define OSEnterCritical() (CPU_SR = OS_CPU_SR_SAVE())
-void OS_CPU_SR_RESTORE(uint32_t);
-#define OSExitCritical()  (OS_CPU_SR_Restore(CPU_SR))
-
-//Define o comando de desabilitar interrupções
-#define UserEnterCritical() __asm("CPSID I")
-//Define o comando da habilitar interrupções
-#define UserExitCritical()  __asm("CPSIE I")
-
-#if (FPU_SUPPORT == 1)
-#define OS_SAVE_ISR()   __asm("CPSID I"); \
-                        __asm("PUSH {LR}")
-#else
-#define OS_SAVE_ISR()
-#endif
-
-#define OS_EXIT_INT()                                     \
-    SelectedTask = scheduler();                           \
-    if (currentTask != SelectedTask){                     \
-        SAVE_CONTEXT();                                   \
-        SAVE_SP();                                        \
-        Context
-}
-*/
 
 #define dispatcher() __asm( "cpsie i                \n"   \
                             "svc 0                  \n")
